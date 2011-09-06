@@ -1,0 +1,32 @@
+#%Module2.0
+# 
+# Module file for kurs 2D1424: Datorgeometri i bildanalys och visualisering
+#
+# Initial version 2002-02-23 by Carsten Rother
+#
+
+if [module-info mode display] {
+  puts stderr "\nDefinitions for kurs 2D1424 Datorgeometri i bildanalys och visualisering (including definitions for Matlab)\n"
+}
+
+# From 2002 and on, the "bok" program is in a module
+# module add resultat
+
+setenv 		DGGKHOME	/info/NADA-kurser/datorgeometri-gk/
+
+# Definitions for Matlab
+prepend-path	MATLABPATH 	$env(DGGKHOME)images/
+prepend-path	MATLABPATH 	$env(DGGKHOME)functions/ 
+prepend-path	MATLABPATH 	$env(DGGKHOME)data/
+prepend-path	MATLABPATH 	$env(DGGKHOME)vrml/
+
+# Image processing packages distributed by the CVAP group
+# (not needed for the course; just provided as pointers)
+# Not verified functionality yet under Solaris 5.8
+# module use /misc/cvap/modules
+# module load cvap
+
+
+# Modules used for appletviewer
+module load java/1.2JDKfc0
+
