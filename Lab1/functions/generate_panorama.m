@@ -6,7 +6,7 @@
 %         are registered to one reference view (ref_view)
 %
 
-% adjustments for outputs
+% adjustments for output
 format compact;
 format short g;
 
@@ -25,8 +25,8 @@ data_norm = [];
 [images, name_loaded_images] = load_images_grey(name_file_images, am_cams);
 
 % click some points or load the data
-% load '../data/data_kth.mat'; % if you load a clicked sequnce
-data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
+load '../data/data_kth.mat'; % if you load a clicked sequnce
+%data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
 save '../data/data_kth.mat' data; % for later use
 
 % normalize the data
@@ -42,7 +42,7 @@ end
 % Remember, you have to set
 % homographies{ref_view} as well
 %
-%------------------------------
+%------------------------------ 
 
 % determine all homographies to a reference view
 
@@ -50,13 +50,27 @@ end
 homographies{ ref_view } = eye( 3 );
 
 % homographie btw view i and ref_view
-% rely on the fact that the user clicked 4 points
+
+borne1 = 1;
+borne2 = 1;
+PX     = [];
+P3     = [];
+
 for i = 1:( ref_view-1 )
-  % 1st parameter : points in refview from Cx (common with view x)
-  % 2nd parameter : points in refview from C3
+  % 1st parameter : points in camera x
+  % 2nd parameter : points in camera 3
+  
+  while isnan( data( i*3 - 2, borne2 ) ) == false
+    borne2 = borne2 + 1;
+  end
+  
+  PX = data( i*3 - 2 : i*3, borne1 : borne2 - 1 );
+  P3 = data( ref_view*3 - 2 : ref_view*3, borne1 : borne2 - 1 );
+  
   homographies{ i } = ...
-    det_homographies( data( i*3 - 2 : i*3, ref_view*4 - 3 : ref_view*4 ), ...
-                      data( ref_view*3 - 2 : ref_view*3, ref_view*4 - 3 : ref_view*4 );
+    det_homographies( PX, P3 );
+
+  borne1 = borne2;
 end
 
 % check error in the estimated homographies
