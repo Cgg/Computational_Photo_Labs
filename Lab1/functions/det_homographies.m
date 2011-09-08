@@ -42,16 +42,16 @@ alpha = zeros( 1, 9 );
 beta  = zeros( 1, 9 );
 
 for j = 1:am_pts
-  alpha( 1:3 ) = points2( :, j )';
+  alpha( 1:3 ) =   points1( :, j )';
   alpha( 7 )   = - points1( 1, j ) * points2( 1, j ); % - xb * xa
   alpha( 8 )   = - points1( 2, j ) * points2( 1, j ); % - yb * xa
   alpha( 9 )   = - points2( 1, j ) ;                  % - xa
-  
-  beta( 4:6 ) = points2( :, j )';
+
+  beta( 4:6 ) =   points1( :, j )';
   beta( 7 )   = - points1( 1, j ) * points2( 2, j ); % - xb * ya
   beta( 8 )   = - points1( 2, j ) * points2( 2, j ); % - yb * ya
-  beta( 9 )   = - points2( 1, j ) ;                  % - ya
-  
+  beta( 9 )   = - points2( 2, j ) ;                  % - ya
+
   Q( j, : )          = alpha( : );
   Q( j + am_pts, : ) = beta( : );
 end
