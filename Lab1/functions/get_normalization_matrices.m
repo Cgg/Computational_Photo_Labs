@@ -12,7 +12,7 @@
 %         matrix for camera 1 
 %
 
-function [norm_mat] = get_normalization_matrix(data);   
+function [norm_mat] = get_normalization_matrices(data)
 
 
 % get Info 
