@@ -59,16 +59,15 @@ P3     = [];
 for i = 1:( ref_view-1 )
   % 1st parameter : points in camera x
   % 2nd parameter : points in camera 3
-  
+
   while ( isnan( data( i*3 - 2, borne2 ) ) == false ) && borne2 < size( data, 2 )
     borne2 = borne2 + 1;
   end
-  
+
   PX = data( i*3 - 2 : i*3, borne1 : borne2 - 1 );
   P3 = data( ref_view*3 - 2 : ref_view*3, borne1 : borne2 - 1 );
-  
-  homographies{ i } = ...
-    det_homographies( PX, P3 );
+
+  homographies{ i } = det_homographies( PX, P3 );
 
   borne1 = borne2;
 end
