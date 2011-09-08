@@ -35,9 +35,6 @@ for hi1 = 1:am_cams
   data_norm(hi1*3-2:hi1*3,:) = norm_mat(hi1*3-2:hi1*3,:) * data(hi1*3-2:hi1*3,:);
 end
 
-% determine all homographies to a reference view
-
-
 %------------------------------
 %
 % FILL IN THIS PART
@@ -46,6 +43,21 @@ end
 % homographies{ref_view} as well
 %
 %------------------------------
+
+% determine all homographies to a reference view
+
+% the view 3 will be the reference one
+homographies{ ref_view } = eye( 3 );
+
+% homographie btw view i and ref_view
+% rely on the fact that the user clicked 4 points
+for i = 1:( ref_view-1 )
+  % 1st parameter : points in refview from Cx (common with view x)
+  % 2nd parameter : points in refview from C3
+  homographies{ i } = ...
+    det_homographies( data( i*3 - 2 : i*3, ref_view*4 - 3 : ref_view*4 ), ...
+                      data( ref_view*3 - 2 : ref_view*3, ref_view*4 - 3 : ref_view*4 );
+end
 
 % check error in the estimated homographies
 for hi1 = 1:am_cams
