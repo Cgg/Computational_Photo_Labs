@@ -13,7 +13,7 @@ format short g;
 % Parameters fot the process
 ref_view = 3; % Reference view
 am_cams = 3; % Amount of cameras
-name_file_images = 'names_images_kthsmall.txt';
+name_file_images = '../images/names_images_kthsmall.txt';
 name_panorama = '../images/panorama_image.jpg';
 
 % initialise
