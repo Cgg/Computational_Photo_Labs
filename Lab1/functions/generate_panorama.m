@@ -27,7 +27,7 @@ data_norm = [];
 % click some points or load the data
 load '../data/data_kth.mat'; % if you load a clicked sequnce
 %data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
-save '../data/data_kth.mat' data; % for later use
+%save '../data/data_kth.mat' data; % for later use
 
 % normalize the data
 [norm_mat] = get_normalization_matrices(data);
@@ -60,7 +60,7 @@ for i = 1:( ref_view-1 )
   % 1st parameter : points in camera x
   % 2nd parameter : points in camera 3
   
-  while isnan( data( i*3 - 2, borne2 ) ) == false
+  while ( isnan( data( i*3 - 2, borne2 ) ) == false ) && borne2 < size( data, 2 )
     borne2 = borne2 + 1;
   end
   
