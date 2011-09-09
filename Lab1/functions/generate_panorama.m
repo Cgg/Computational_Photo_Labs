@@ -18,6 +18,7 @@ name_panorama = '../images/panorama_image.jpg';
 
 % initialise
 homographies = cell(am_cams,1); % we have: point(ref_view) = homographies{i} * point(image i)
+norm_homogra = cell(am_cams,1); % we have: point(ref_view) = homographies{i} * point(image i)
 data = [];
 data_norm = [];
 
@@ -48,8 +49,9 @@ end
 
 % the view 3 will be the reference one
 homographies{ ref_view } = eye( 3 );
+norm_homogra{ ref_view } = eye( 3 );
 
-% homographie btw view i and ref_view
+% homographie btw normalized view i and ref_view
 
 borne1 = 1;
 borne2 = 1;
@@ -64,13 +66,22 @@ for i = 1:( ref_view-1 )
     borne2 = borne2 + 1;
   end
 
-  PX = data( i*3 - 2 : i*3, borne1 : borne2 - 1 );
-  P3 = data( ref_view*3 - 2 : ref_view*3, borne1 : borne2 - 1 );
+  PX = data_norm( i*3 - 2 : i*3, borne1 : borne2 - 1 );
+  P3 = data_norm( ref_view*3 - 2 : ref_view*3, borne1 : borne2 - 1 );
 
-  homographies{ i } = det_homographies( PX, P3 );
+  norm_homogra{ i } = det_homographies( PX, P3 );
 
   borne1 = borne2;
 end
+
+% get the homographies btw non-normalized points
+NInvRef = inv( norm_mat( ref_view*3 - 2 : ref_view*3, : ) );
+
+for i = 1 : ( ref_view - 1 )
+  homographies{ i } = NInvRef * norm_homogra{ i } * ...
+                      norm_mat( i*3 - 2 : i*3, : );
+end
+
 
 % check error in the estimated homographies
 for hi1 = 1:am_cams
