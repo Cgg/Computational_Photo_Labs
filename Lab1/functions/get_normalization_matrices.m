@@ -37,8 +37,6 @@ N = eye( 3 );
 centroid = zeros( 3, 1 );
 distance = 0;
 
-sq2dist  = 0;
-
 n_points = 0;
 
 for i = 1 : am_cams
@@ -46,7 +44,7 @@ for i = 1 : am_cams
   % centroid
   for p = 1 : am_points
 
-    if isnan( data( i*3 - 2, p ) ) == false
+    if isnan( data( i*3 - 2 : i*3, p ) ) == [0;0;0]
       centroid = centroid + data( i*3 - 2 : i*3, p );
 
       % increase number of points taken into account
@@ -55,20 +53,20 @@ for i = 1 : am_cams
   end
 
   centroid = centroid / n_points;
-
+  
   % distance
   for p = 1 : am_points
 
     if isnan( data( i*3 - 2, p ) ) == false
-      distance = distance + sqrt( sum( ( data( i*3 - 2 : i*3, p ) - ...
-      centroid ).^2 ) );
+
+      P = data( i*3 - 2 : i*3, p ) - centroid;
+      
+      distance = distance + sqrt( sum( P ).^2 );
       % do not need to calculate n_points, already done
     end
   end
 
   distance = distance / n_points;
-
-  n_points = 0;
 
   % now compute N
   sq2dist = sqrt( 2 ) / distance;
@@ -80,4 +78,9 @@ for i = 1 : am_cams
   N( 2, 3 ) = - centroid( 2 ) * sq2dist;
 
   norm_mat( i*3 - 2 : i*3, : ) = N;
+  
+  % reset everything
+  n_points = 0;
+  centroid = zeros( 3, 1 );
+  distance = 0;
 end
