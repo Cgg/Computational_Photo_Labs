@@ -23,28 +23,34 @@ function E = det_E_matrix(points1, points2, K1, K2)
 %
 %------------------------------
 
+[norm_mat1] = get_normalization_matrices( points1 );
+[norm_mat2] = get_normalization_matrices( points2 );
+
+p1_norm = norm_mat1 * points1;
+p2_norm = norm_mat2 * points2;
+
 E = zeros( 3 );
 
 % assuming points1 and points2 are paired
 % assuming points1 = pointsA and points2 = pointsB
 
-am_pts = size( points1, 2 );
+am_pts = size( p1_norm, 2 );
 
-assert( am_pts == size( points2, 2 ), 'Must provide same number of points in each set' );
+assert( am_pts == size( p2_norm, 2 ), 'Must provide same number of points in each set' );
 
 e = ones( 1, 9 );
 
 W = zeros( am_pts, 9 );
 
 for i = 1 : am_pts
-  e( 1 ) = points2( 1, i ) * points1( 1, i );
-  e( 2 ) = points2( 1, i ) * points1( 2, i );
-  e( 3 ) = points2( 1, i );
-  e( 4 ) = points2( 2, i ) * points1( 1, i );
-  e( 5 ) = points2( 2, i ) * points1( 2, i );
-  e( 6 ) = points2( 2, i );
-  e( 7 ) =                   points1( 1, i );
-  e( 8 ) =                   points1( 2, i );
+  e( 1 ) = p2_norm( 1, i ) * p1_norm( 1, i );
+  e( 2 ) = p2_norm( 1, i ) * p1_norm( 2, i );
+  e( 3 ) = p2_norm( 1, i );
+  e( 4 ) = p2_norm( 2, i ) * p1_norm( 1, i );
+  e( 5 ) = p2_norm( 2, i ) * p1_norm( 2, i );
+  e( 6 ) = p2_norm( 2, i );
+  e( 7 ) =                   p1_norm( 1, i );
+  e( 8 ) =                   p1_norm( 2, i );
 
   W( i, : ) = e;
 end
@@ -55,8 +61,21 @@ e = V( :, size( W, 2 ) )';
 
 E = [ e( 1:3 ) ; e( 4:6 ) ; e( 7:9 ) ];
 
+% generate correct E matrix -- TODO generate error ?!
+%[ U, S, V ] = svd( E );
 
-[ err_avg, err_max ] = checkE( E, points1, points2 );
+%E = zeros( 3 );
+
+%E( 1, 1 ) = ( S( 1, 1 ) + S( 2, 2 ) ) / 2;
+%E( 2, 2 ) = E( 1, 1 );
+
+%E = U * E * V';
+
+% get essential matrix btw non normalized points
+E = norm_mat2' * E * norm_mat1;
+
+% check that we do have the essential matrix
+[ err_avg, err_max ] = checkE( E, p1_norm, p2_norm );
 
 fprintf('average error: %5.2f; maximum error: %5.2f \n', err_avg, err_max);
 
