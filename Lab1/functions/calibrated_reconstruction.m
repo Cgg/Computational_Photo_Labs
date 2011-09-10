@@ -77,6 +77,10 @@ end
 % determine the essential matrix 
 E = det_E_matrix(data(1:3,:), data(4:6,:), K1, K2);
 
+[ err_avg, err_max ] = checkE( E, data );
+
+fprintf('average error: %5.2f; maximum error: %5.2f \n', error_avg, error_max);
+
 % determine the two camera matrices
 [cams, cam_centers] = det_stereo_cameras(E, K1, K2, data(:,1)); 
 
