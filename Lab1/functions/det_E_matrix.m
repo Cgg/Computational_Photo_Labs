@@ -37,14 +37,14 @@ e = ones( 1, 9 );
 W = zeros( am_pts, 9 );
 
 for i = 1 : am_pts
-  e( 1 ) = points2( 1 ) * points1( 1 );
-  e( 2 ) = points2( 1 ) * points1( 2 );
-  e( 3 ) = points2( 1 );
-  e( 4 ) = points2( 2 ) * points1( 1 );
-  e( 5 ) = points2( 2 ) * points1( 2 );
-  e( 6 ) = points2( 2 );
-  e( 7 ) =                points1( 1 );
-  e( 8 ) =                points1( 2 );
+  e( 1 ) = points2( 1, i ) * points1( 1, i );
+  e( 2 ) = points2( 1, i ) * points1( 2, i );
+  e( 3 ) = points2( 1, i );
+  e( 4 ) = points2( 2, i ) * points1( 1, i );
+  e( 5 ) = points2( 2, i ) * points1( 2, i );
+  e( 6 ) = points2( 2, i );
+  e( 7 ) =                   points1( 1, i );
+  e( 8 ) =                   points1( 2, i );
 
   W( i, : ) = e;
 end
