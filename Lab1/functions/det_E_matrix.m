@@ -75,7 +75,7 @@ E = [ e( 1:3 ) ; e( 4:6 ) ; e( 7:9 ) ];
 E = norm_mat2' * E * norm_mat1;
 
 % check that we do have the essential matrix
-[ err_avg, err_max ] = checkE( E, p1_norm, p2_norm );
+[ err_avg, err_max ] = checkE( E, points1, points2 );
 
 fprintf('average error: %5.2f; maximum error: %5.2f \n', err_avg, err_max);
 
