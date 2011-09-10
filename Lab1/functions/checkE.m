@@ -19,8 +19,8 @@ for i = 1 : am_pts
 
   err_avg = err_avg + err_cur;
 
-  if err_cur > err_max
-    err_max = err_cur
+  if abs( err_cur ) > abs( err_max )
+    err_max = err_cur;
   end
 
 end
