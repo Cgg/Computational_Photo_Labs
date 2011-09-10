@@ -45,7 +45,7 @@ Ma = [ K1 zeros( 3, 1 ) ];
 
 W = [ 0 -1  0 ; ...
       1  0  0 ; ...
-      0  0  1 ]
+      0  0  1 ];
 
 R = cell( 1, 2 );
 
@@ -70,7 +70,7 @@ Mb{ 4 } = [ ( K2 * R{2} ) -T ];
 
 for i = 1 : 4
   % reconstruct 1st point of data for each possible Mb matrix
-  P = det_model( [ Ma ; Mb{ i } ], data( :, 1 ) )
+  P = det_model( [ Ma ; Mb{ i } ], data( :, 1 ) );
 
   % check for each point if it is in front of both cameras
   % ie dot product btw camera z axis (given by 3rd column of associated
@@ -80,7 +80,7 @@ for i = 1 : 4
   CbP = P(1:3) - Mb{ i }( :, 4 );
 
   if( dot( CaP, Ma( :, 3 ) ) >= 0 && ...
-      dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) >= 0 )
+      dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) ) >= 0 )
     fprintf( 'the solution is %i \n', i );
     break % ugly
   end
