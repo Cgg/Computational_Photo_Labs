@@ -81,6 +81,8 @@ data_norm(4:6,:) = norm_mat(4:6,:) * data(4:6,:);
 % determine the essential matrix 
 E = det_E_matrix(data_norm(1:3,:), data_norm(4:6,:), K1, K2);
 
+E = norm_mat( 4:6, : )' * E * norm_mat( 1:3, : );
+
 % determine the two camera matrices
 [cams, cam_centers] = det_stereo_cameras(E, K1, K2, data(:,1));
 
