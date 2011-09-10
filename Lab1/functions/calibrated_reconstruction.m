@@ -78,7 +78,8 @@ end
 data_norm(1:3,:) = norm_mat(1:3,:) * data(1:3,:);
 data_norm(4:6,:) = norm_mat(4:6,:) * data(4:6,:);
 
-fprintf('average error: %5.2f; maximum error: %5.2f \n', error_avg, error_max);
+% determine the essential matrix 
+E = det_E_matrix(data_norm(1:3,:), data_norm(4:6,:), K1, K2);
 
 % determine the two camera matrices
 [cams, cam_centers] = det_stereo_cameras(E, K1, K2, data(:,1)); 
