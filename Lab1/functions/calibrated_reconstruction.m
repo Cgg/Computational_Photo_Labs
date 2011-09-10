@@ -1,9 +1,9 @@
-% Script: calibrated_reconstruction.m 
+% Script: calibrated_reconstruction.m
 %
 % Method: Performs a reconstruction of two calibrated cameras
 %         by solving first for the essentila matrix E. From
 %         E the rotation and translation is obtained and finally
-%         the two cameras. 
+%         the two cameras.
 %         The point-structure is obtained by triangulation.
 %         Finally the result is stored as a VRML model 
 % 
