@@ -20,10 +20,7 @@ function model = det_model(cam, data)
 
 am_pts = size( data, 2 );
 
-model = zeros( 4, am_points );
-
-pa = zeros( 3, 1 );
-pb = zeros( 3, 1 );
+model = zeros( 4, am_pts );
 
 W  = zeros( 4 );
 
@@ -36,15 +33,15 @@ for i = 1 : am_pts
 
   for i1 = 1 : 2
     for j1 = 1 : 4
-      W( i1, j1 )   = pa( i1 )*Ma( 3, j1 ) - Ma( i1, j1 );
-      W( 2*i1, j1 ) = pb( i1 )*Mb( 3, j1 ) - Mb( i1, j1 );
+      W( i1, j1 )     = pa( i1 )*Ma( 3, j1 ) - Ma( i1, j1 );
+      W( 2 + i1, j1 ) = pb( i1 )*Mb( 3, j1 ) - Mb( i1, j1 );
     end
   end
 
   [ U, S, V ] = svd( W );
 
   p = V( :, size( W, 2 ) );
-
+  
   model( :, i ) = p;
 
   W  = zeros( 4 );

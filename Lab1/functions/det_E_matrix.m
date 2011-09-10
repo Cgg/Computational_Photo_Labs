@@ -23,13 +23,14 @@ function E = det_E_matrix(points1, points2, K1, K2)
 %
 %------------------------------
 
+points1 = K1 \ points1;
+points2 = K2 \ points2;
+
 [norm_mat1] = get_normalization_matrices( points1 );
 [norm_mat2] = get_normalization_matrices( points2 );
 
 p1_norm = norm_mat1 * points1;
 p2_norm = norm_mat2 * points2;
-
-E = zeros( 3 );
 
 % assuming points1 and points2 are paired
 % assuming points1 = pointsA and points2 = pointsB
@@ -55,28 +56,27 @@ for i = 1 : am_pts
   W( i, : ) = e;
 end
 
-[ U, S, V ] = svd( W );
+[ ~, ~, V ] = svd( W );
 
 e = V( :, size( W, 2 ) )';
 
 E = [ e( 1:3 ) ; e( 4:6 ) ; e( 7:9 ) ];
 
-% generate correct E matrix -- TODO generate error ?!
-%[ U, S, V ] = svd( E );
-
-%E = zeros( 3 );
-
-%E( 1, 1 ) = ( S( 1, 1 ) + S( 2, 2 ) ) / 2;
-%E( 2, 2 ) = E( 1, 1 );
-
-%E = U * E * V';
-
 % get essential matrix btw non normalized points
 E = norm_mat2' * E * norm_mat1;
 
+% generate correct E matrix if the 3rd singular value is non-zero
+[ U, S, V ] = svd( E );
+
+E = zeros( 3 );
+
+E( 1, 1 ) = ( S( 1, 1 ) + S( 2, 2 ) ) / 2;
+E( 2, 2 ) = E( 1, 1 );
+
+E = U * E * V';
+
 % check that we do have the essential matrix
 [ err_avg, err_max ] = checkE( E, points1, points2 );
-
 fprintf('average error: %5.2f; maximum error: %5.2f \n', err_avg, err_max);
 
 end

@@ -15,11 +15,11 @@ err_avg = 0;
 
 for i = 1 : am_pts
 
-  err_cur = points2( :, i )' * E * points1( :, i );
+  err_cur = abs( points2( :, i )' * E * points1( :, i ) );
 
   err_avg = err_avg + err_cur;
 
-  if abs( err_cur ) > abs( err_max )
+  if err_cur > err_max
     err_max = err_cur;
   end
 

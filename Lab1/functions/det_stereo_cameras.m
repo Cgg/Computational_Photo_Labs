@@ -52,12 +52,10 @@ R = cell( 1, 2 );
 R{1} = U * W  * V';
 R{2} = U * W' * V';
 
-if( det( R{1} ) < 0 )
-  R{1} = R{1} * ( - 1 );
-end
-
-if( det( R{2} ) < 0 )
-  R{2} = R{2} * ( - 1 );
+for i = 1 : 2
+  if( det( R{i} ) < 0 )
+    R{i} = R{i} * ( - 1 );
+  end
 end
 
 % the 4 possible solutions
@@ -68,6 +66,8 @@ Mb{ 2 } = [ ( K2 * R{1} ) -T ];
 Mb{ 3 } = [ ( K2 * R{2} )  T ];
 Mb{ 4 } = [ ( K2 * R{2} ) -T ];
 
+data( :, 1 )
+
 for i = 1 : 4
   % reconstruct 1st point of data for each possible Mb matrix
   P = det_model( [ Ma ; Mb{ i } ], data( :, 1 ) );
@@ -76,17 +76,32 @@ for i = 1 : 4
   % ie dot product btw camera z axis (given by 3rd column of associated
   % rotation matrix) and vector from projection center to
   % point is 0.
-  CaP = P(1:3);
-  CbP = P(1:3) - Mb{ i }( :, 4 );
-
+  CaP = P(1:3)
+  CbP = P(1:3) - Mb{ i }( :, 4 ) % vector from proj center of CamB to Point
+  
   if( dot( CaP, Ma( :, 3 ) ) >= 0 && ...
-      dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) ) >= 0 )
+    dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) ) >= 0 )
     fprintf( 'the solution is %i \n', i );
+
     break % ugly
+
   end
 end
 
 cams( 1:3, : ) = Ma;
 cams( 4:6, : ) = Mb{ i };
+
+% Last, we verify that E = R[t]x
+
+T = zeros( 3 );
+T( 1, 2 ) = -cam_centers( 3, 2 );
+T( 1, 3 ) =  cam_centers( 2, 2 );
+T( 2, 3 ) = -cam_centers( 1, 2 );
+
+T = T - T';
+
+E-R{ceil(i/2)}*T
+
+
 
 end
