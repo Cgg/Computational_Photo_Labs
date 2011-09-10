@@ -55,4 +55,9 @@ e = V( :, size( W, 2 ) )';
 
 E = [ e( 1:3 ) ; e( 4:6 ) ; e( 7:9 ) ];
 
+
+[ err_avg, err_max ] = checkE( E, points1, points2 );
+
+fprintf('average error: %5.2f; maximum error: %5.2f \n', err_avg, err_max);
+
 end
