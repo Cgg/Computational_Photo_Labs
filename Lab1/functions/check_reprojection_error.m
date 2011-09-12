@@ -19,10 +19,7 @@ function [error_average, error_max] = check_reprojection_error(data, cam, model)
 %
 %------------------------------
 
-data
-cam
-model
-test_data = cam * model
+test_data = cam * model;
 
 am_pts  = size( model, 2 );
 
@@ -31,7 +28,7 @@ error_max     = 0;
 
 for i = 1 : am_pts
   for j = 1 : 2
-  % euclidean distance btw slice of data and slice of other_data
+  % euclidean distance btw slice of data and slice of test_data
   error_curr = sqrt( sum( (data(j*3-2:j*3,i) - test_data(j*3-2:j*3,i) ).^2 ) );
 
   error_average = error_average + error_curr;
