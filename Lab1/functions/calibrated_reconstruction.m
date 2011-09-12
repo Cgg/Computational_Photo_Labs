@@ -78,16 +78,18 @@ end
 E = det_E_matrix(data(1:3,:), data(4:6,:), K1, K2);
 
 % determine the two camera matrices
-[cams, cam_centers] = det_stereo_cameras(E, K1, K2, data(:,42));
+[cams, cam_centers] = det_stereo_cameras(E, K1, K2, data(:,1));
 
 % obtain the complete model by triangulation
 % first normalize the model and the cameras
 [norm_mat] = get_normalization_matrices(data);
+
 data_norm(1:3,:) = norm_mat(1:3,:) * data(1:3,:);
 data_norm(4:6,:) = norm_mat(4:6,:) * data(4:6,:);
 cams_norm(1:3,:) = norm_mat(1:3,:) * cams(1:3,:);
 cams_norm(4:6,:) = norm_mat(4:6,:) * cams(4:6,:);
-model = det_model(cams, data);
+
+model = det_model(cams_norm, data_norm);
 
 % normalize the the 4th coordinate of model points to 1
 model = norm_points_to_one(model);
@@ -109,7 +111,7 @@ triang = get_delaunay_triang(data, image_ref);
 % triang = [];
 
 % visualize the reconstruction
-visualize(model, cam_centers, triang, 0);
+visualize(model, cam_centers, triang, 1);
 
 % save the vrml model + texture - only for real data
 if (~flag_synthetic_data)
