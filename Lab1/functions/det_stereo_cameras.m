@@ -98,12 +98,21 @@ cams( 4:6, : ) = Mb{ i };
 
 T = zeros( 3 );
 
-T( 1, 2 ) = -cam_centers( 3, 2 );
-T( 1, 3 ) =  cam_centers( 2, 2 );
-T( 2, 3 ) = -cam_centers( 1, 2 );
+if( mod( i, 2 ) ~= 0 )
+  T( 1, 2 ) = -cam_centers( 3, 2 );
+  T( 1, 3 ) =  cam_centers( 2, 2 );
+  T( 2, 3 ) = -cam_centers( 1, 2 );
+else
+  T( 1, 2 ) =  cam_centers( 3, 2 );
+  T( 1, 3 ) = -cam_centers( 2, 2 );
+  T( 2, 3 ) =  cam_centers( 1, 2 );
+end
 
 T = T - T';
 
+T = R{ceil(i/2)}*T
+T = T/norm(T);
+E = E/norm(E);
 E-R{ceil(i/2)}*T
 
 
