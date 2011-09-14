@@ -1,23 +1,23 @@
 % function save_vrml(data, model, triang, filename, name_image, image_size, para1, para2);
 %
-% Method: Saves the model with tringulation as a textured model 
+% Method: Saves the model with tringulation as a textured model
 %         in vrml 2.0
 %
 % Input: image data size (3*m,n)
 %        model size (4,n)
 %        triang size (n,3) all indeces of the model
-%        name_file: name of the VRML file 
+%        name_file: name of the VRML file
 %        name_image: the name of the reference images
-%        image_size: (1,2) with xsize, ysize of the reference image 
-%        para1: 0 - with texture; 1 - without texture; 
-%        para2: number of the reference image 
-% 
+%        image_size: (1,2) with xsize, ysize of the reference image
+%        para1: 0 - with texture; 1 - without texture;
+%        para2: number of the reference image
+%
 
 function save_vrml(data, model, triang, filename, name_image, image_size, para1, para2)
 
-% Info 
-am_points = size(model,2); 
-am_triang = size(triang,1); 
+% Info
+am_points = size(model,2);
+am_triang = size(triang,1);
 
 %----------------------------------------------------
 % first scale the obect that it has max size 1
@@ -28,7 +28,7 @@ size_y = max(model(2,:))-min(model(2,:));
 size_z = max(model(3,:))-min(model(3,:));
 scale = 5.0/max([size_x, size_y, size_z]);
 model = model * scale;
-model(4,:) = ones(1,size(model,2)); 
+model(4,:) = ones(1,size(model,2));
 
 %----------------------------------------------------
 % now move the center of the object into (0,0,0,1)
@@ -37,20 +37,20 @@ model(4,:) = ones(1,size(model,2));
 trans(1,1) = sum(model(1,:))/size(model,2);
 trans(2,1) = sum(model(2,:))/size(model,2);
 trans(3,1) = sum(model(3,:))/size(model,2);
-trans(4,1) = 0; 
+trans(4,1) = 0;
 
 for hi1 = 1:am_points
-  model(:,hi1) = model(:,hi1) - trans; 
+  model(:,hi1) = model(:,hi1) - trans;
 end
 
 %----------------------------------------------------
-% open the file 
+% open the file
 %----------------------------------------------------
 
 fid=fopen(filename,'w');
 
 %----------------------------------------------------
-% the start lines 
+% the start lines
 %----------------------------------------------------
 
 fprintf(fid,'#VRML V2.0 utf8\n\n');
@@ -94,7 +94,7 @@ end
 fprintf(fid,'               ] } \n');
 
 %----------------------------------------------------
-% store all the triangles 
+% store all the triangles
 %----------------------------------------------------
 fprintf(fid,'	          coordIndex [ \n');
 
@@ -107,7 +107,7 @@ fprintf(fid,'	          coordIndex [ \n');
 fprintf(fid,'               ] \n');
 
 %----------------------------------------------------
-% store all the texture 
+% store all the texture
 %----------------------------------------------------
 if (para1 == 0)
   fprintf(fid,'	           texCoord TextureCoordinate { point [ \n');
@@ -121,7 +121,7 @@ if (para1 == 0)
   fprintf(fid,'               ] } \n');
 end
 
-fprintf(fid,'	         }	\n');	    	  
+fprintf(fid,'	         }	\n');
 fprintf(fid,'          }  \n');
 fprintf(fid,'  ]  \n');
 fprintf(fid,'}  \n');
