@@ -36,7 +36,7 @@ for i = 1 : am_pts
   if error_curr > error_max
     error_max = error_curr;
   end
-  
+
   end
 end
 
