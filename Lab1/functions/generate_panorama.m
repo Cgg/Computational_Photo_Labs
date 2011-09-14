@@ -28,7 +28,7 @@ data_norm = [];
 % click some points or load the data
 load '../data/data_kth.mat'; % if you load a clicked sequnce
 %data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
-%save '../data/data_kth.mat' data; % for later use
+%save '../data/data_kth_big.mat' data; % for later use
 
 % normalize the data
 [norm_mat] = get_normalization_matrices(data);
