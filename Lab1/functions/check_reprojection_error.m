@@ -21,6 +21,9 @@ function [error_average, error_max] = check_reprojection_error(data, cam, model)
 
 test_data = cam * model;
 
+test_data( 1:3, : ) = norm_points_to_one( test_data( 1:3, : ) );
+test_data( 4:6, : ) = norm_points_to_one( test_data( 4:6, : ) );
+
 am_pts  = size( model, 2 );
 
 error_average = 0;
