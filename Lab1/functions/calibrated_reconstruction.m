@@ -98,7 +98,7 @@ model = norm_points_to_one(model);
 cam_centers = norm_points_to_one(cam_centers);
 
 % check the reprojection error
-[error_average, error_max] = check_reprojection_error(data, cams, model);
+[error_average, error_max] = check_reprojection_error(data_norm , cams_norm, model);
 fprintf('\n\nThe reprojection error: data = cams * model is: \n');
 fprintf('Average error: %5.2fpixel; Maximum error: %5.2fpixel \n', error_average, error_max);
 
@@ -107,11 +107,11 @@ fprintf('Average error: %5.2fpixel; Maximum error: %5.2fpixel \n', error_average
 %---------------------------------------------
 
 % triangulate the result
-triang = get_delaunay_triang(data, image_ref);
+triang = get_delaunay_triang(data_norm, image_ref);
 % triang = [];
 
 % visualize the reconstruction
-visualize(model, cam_centers, triang, 1);
+visualize(model, cam_centers, triang, 1 );
 
 % save the vrml model + texture - only for real data
 if (~flag_synthetic_data)
