@@ -39,7 +39,7 @@ cam_centers = zeros(4,2);
 % data_sim, cams_sim, model_sim; with  data_sim = cams_sim * model_sim;
 % and K1_sim, K2_sim are the internal matrix of first and second camera
 if (flag_synthetic_data)
-  load 'sphere_data.mat';
+  load '../data/sphere_data.mat';
   data = data_sim;
 end
 

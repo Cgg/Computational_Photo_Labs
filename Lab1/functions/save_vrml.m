@@ -104,6 +104,10 @@ fprintf(fid,'	          coordIndex [ \n');
 %
 %------------------------------
 
+for i = 1 : am_triang
+  fprintf( fid, ' %i %i %i -1', triang( 1:3, i ) );
+end
+
 fprintf(fid,'               ] \n');
 
 %----------------------------------------------------
