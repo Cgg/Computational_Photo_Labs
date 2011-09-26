@@ -1,3 +1,3 @@
-teapot1.jpg
-teapot2.jpg
+../images/teapot1.jpg
+../images/teapot2.jpg
 

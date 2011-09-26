@@ -15,10 +15,10 @@
 % Parameters
 image_ref = 1; % Reference view for triangulation & vrml model
 am_cams = 2; % amount of cameras
-name_file_images = 'names_images_teapot.txt'; % the two images
-image_name = 'teapot1.jpg'; % name of image (image_ref) for the VRML model
+name_file_images = '../images/names_images_teapot.txt'; % the two images
+image_name = '../images/teapot1.jpg'; % name of image (image_ref) for the VRML model
 name_file_vrml = '../vrml/vrml_model.wrl'; % of the final VRML model
-flag_synthetic_data = 1; % 0 - we work with real data; 1- we work with syntetic data
+flag_synthetic_data = 0; % 0 - we work with real data; 1- we work with syntetic data
 
 % adjustments
 format compact;
@@ -45,11 +45,11 @@ end
 
 % real data
 if (~flag_synthetic_data)
-  % load '../data/data_teapot.mat';
-  data = [];
-  [images,image_names] = load_images_grey(name_file_images, am_cams);
-  data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
-  save '../data/data_teapot.mat' data; % for later use
+  load '../data/data_teapot.mat';
+  %data = [];
+  %[images,image_names] = load_images_grey(name_file_images, am_cams);
+  %data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
+  %save '../data/data_teapot.mat' data; % for later use
 end
 
 % Initialize & get the amount of points

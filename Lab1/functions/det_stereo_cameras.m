@@ -44,6 +44,8 @@ cam_centers( 1:3, 2 ) = T;
 % rotation of camera B
 Ma = [ K1 zeros( 3, 1 ) ];
 
+Ra = [ 0;0;1 ];
+
 W = [ 0 -1  0 ; ...
       1  0  0 ; ...
       0  0  1 ];
@@ -54,18 +56,18 @@ R{1} = U * W  * V';
 R{2} = U * W' * V';
 
 for i = 1 : 2
-  if( det( R{i} ) < 0 )
-    R{i} = R{i} * ( - 1 );
+  if( det( R{i} ) < -1e-5 )
+    R{i} = - R{i};
   end
 end
 
 % the 4 possible solutions
 Mb = cell( 1, 4 );
 
-Mb{ 1 } = ( K2 * R{1} ) * [ eye( 3 )  T ];
-Mb{ 2 } = ( K2 * R{1} ) * [ eye( 3 ) -T ];
-Mb{ 3 } = ( K2 * R{2} ) * [ eye( 3 )  T ];
-Mb{ 4 } = ( K2 * R{2} ) * [ eye( 3 ) -T ];
+Mb{ 1 } = ( K2 * R{1} ) * [ eye( 3 ) -T ];
+Mb{ 2 } = ( K2 * R{1} ) * [ eye( 3 )  T ];
+Mb{ 3 } = ( K2 * R{2} ) * [ eye( 3 ) -T ];
+Mb{ 4 } = ( K2 * R{2} ) * [ eye( 3 )  T ];
 
 for i = 1 : 4
   % reconstruct 1st point of data for each possible Mb matrix
@@ -76,14 +78,18 @@ for i = 1 : 4
   % rotation matrix) and vector from projection center to
   % point is 0.
   CaP = P(1:3);
+
   if( mod( i, 2 ) ~= 0 ) % i = 1 or 3
-    CbP = P(1:3) - T; % vector from proj center of CamB to Point
+    CbP = P(1:3) + T; % vector from proj center of CamB to Point
   else
-    CbP = P(1:3) + T;
+    CbP = P(1:3) - T;
   end
-  
-  if( dot( CaP, Ma( :, 3 ) ) >= 0 && ...
-      dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) ) >= 0 )
+
+  dot( CaP, Ra )
+  dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) )
+
+  if( dot( CaP, Ra ) > 1e-5 && ...
+      dot( CbP, R{ ceil( i / 2 ) }( :, 3 ) ) > 1e-5 )
     fprintf( 'the solution is %i \n', i );
 
     break % ugly
@@ -96,13 +102,19 @@ cams( 4:6, : ) = Mb{ i };
 
 % Last, we verify that E = R[t]x
 
+if( mod( i, 2 ) ~= 0 ) % i = 1 or 3
+  cam_centers( 1:3, 2 ) = T
+else
+  cam_centers( 1:3, 2 ) = -T
+end
+
 T = zeros( 3 );
 
-T( 1, 2 ) = -cam_centers( 3, 2 );
-T( 1, 3 ) =  cam_centers( 2, 2 );
-T( 2, 3 ) = -cam_centers( 1, 2 );
+T( 1, 2 ) =  cam_centers( 3, 2 );
+T( 1, 3 ) = -cam_centers( 2, 2 );
+T( 2, 3 ) =  cam_centers( 1, 2 );
 
-if( mod( i, 2 ) == 0 )
+if( mod( i, 2 ) ~= 0 )
   T = -T;
 end
 
