@@ -64,7 +64,7 @@ fprintf(fid,'   fieldOfView 1.2 # fieldOfView 0.785398 - normal field of view 45
 fprintf(fid,'} \n\n');
 
 fprintf(fid,'Background {\n');
-fprintf(fid,'  skyColor [0.7 0.7 1, 0.7 0.7 1, 0.7 0.7 1]\n');
+fprintf(fid,'  skyColor [0.7 0.7 0, 0.7 0.7 1, 0.7 0.7 1]\n');
 fprintf(fid,'}\n\n');
 
 fprintf(fid,'DEF ROOT Transform {\n');
@@ -105,7 +105,14 @@ fprintf(fid,'	          coordIndex [ \n');
 %------------------------------
 
 for i = 1 : am_triang
-  fprintf( fid, ' %i %i %i -1', triang( 1:3, i ) );
+  fprintf( fid, '                     %d, %d, %d, -1', triang( i, 1:3 ) - 1 );
+
+  if (i ~= am_triang)
+    fprintf(fid,',\n');
+  else
+    fprintf(fid,'\n');
+  end
+
 end
 
 fprintf(fid,'               ] \n');
@@ -121,6 +128,7 @@ if (para1 == 0)
 % FILL IN THIS PART
 %
 %------------------------------
+
 
   fprintf(fid,'               ] } \n');
 end

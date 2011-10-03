@@ -47,7 +47,7 @@ end
 if (~flag_synthetic_data)
   load '../data/data_teapot.mat';
   %data = [];
-  %[images,image_names] = load_images_grey(name_file_images, am_cams);
+  [images,image_names] = load_images_grey(name_file_images, am_cams);
   %data = click_multi_view(images, am_cams, data, 0); % for clicking and displaying data
   %save '../data/data_teapot.mat' data; % for later use
 end
@@ -116,5 +116,5 @@ visualize(model, cam_centers, triang, 1 );
 % save the vrml model + texture - only for real data
 if (~flag_synthetic_data)
   image_size = [size(images{1},1) size(images{1},2)];
-  save_vrml(data, model, triang, name_file_vrml, image_name, image_size, 0, image_ref);
+  save_vrml(data, model, triang, name_file_vrml, image_name, image_size, 1, image_ref);
 end
